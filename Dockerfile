@@ -1,26 +1,23 @@
 FROM python:3.10-slim
 
 ENV PYTHONDONTWRITEBYTECODE=1
-
 ENV PYTHONUNBUFFERED=1
 
-ENV HF_ENDPOINT="https://hf-mirror.com"
+# 安装系统依赖
+RUN apt-get update && apt-get install -y libmagic1
 
-# 设置工作目录
-WORKDIR /app
+WORKDIR /markify
 
-# 将 requirements.txt 复制到容器中
 COPY requirements.txt .
 
-# 安装依赖
-RUN pip install --upgrade -i https://mirrors.tuna.tsinghua.edu.cn/pypi/web/simple pip && \
-    pip install --no-cache-dir -i https://mirrors.tuna.tsinghua.edu.cn/pypi/web/simple -r requirements.txt
+RUN pip install --upgrade -i https://mirrors.tuna.tsinghua.edu.cn/pypi/web/simple pip wheel setuptools 
+RUN apt-get update && apt-get install ffmpeg libsm6 libxext6  -y
 
-# 将应用代码复制到容器中
+# RUN pip install -U "magic-pdf[full]" -i https://mirrors.tuna.tsinghua.edu.cn/pypi/web/simple
+# RUN pip install -r requirements.txt -i https://mirrors.tuna.tsinghua.edu.cn/pypi/web/simple
+
 COPY . .
 
-# 暴露应用服务端口
 EXPOSE 20926
 
-# 定义启动命令
-CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "20926"]
+# CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "20926"]
