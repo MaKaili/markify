@@ -124,7 +124,7 @@ def process_file(db: Session, job_id: str, file_content: bytes, filename: str, m
         else:
             # 将字节内容转为文件流
             file_stream = io.BytesIO(file_content)
-            result = markitdown.convert_stream(file_stream, base_url="http://localhost:20926")
+            result = markitdown.convert_stream(file_stream, base_url="http://localhost:20926", file_extension='.'+filename.split('.')[-1])
 
         # 保存结果到文件
         output_file = OUTPUT_DIR / f"{job_id}.md"
