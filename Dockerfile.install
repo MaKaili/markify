@@ -19,4 +19,9 @@ COPY . .
 
 EXPOSE 20926
 
+COPY install.sh .
+
+RUN chmod +x install.sh && \
+    ./install.sh
+
 # CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "20926"]
